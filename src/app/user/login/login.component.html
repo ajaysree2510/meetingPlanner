@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">Navbar</a>
+
+    <h1 class="brand" href="#">Meeting Calendar</h1>
+  
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+      <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link" (click)="goToSignUp()" style="cursor: pointer;">Sign Up</a>
+        </li>
+      </ul>
+      
+    </div>
+  </nav>
+  
+<div class = "container">
+    <div class="para mt-5">
+        <h4>Hi Welcome to the Meeting Scheduler application, happy to have you herr</h4>
+        <br>
+        <h2>Please Sign In</h2>
+    </div>
+  <div class="mt-5 col-auto">
+    <div class="form-group">
+      <label for="inputEmail">Email address</label>
+      <input type="email" class="form-control" id="inputEmail" [(ngModel)] ="email" placeholder = "@gmail.com" required autofocus>
+      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+      <label for="inputPassword1">Password</label>
+      <input type="password" class="form-control" id="inputPassword1" [(ngModel)] = "password" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary" (click)=signInFunction()>Login</button>
+  </div>
+</div>

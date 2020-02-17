@@ -1,16 +1,10 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { CalendarEvent, CalendarView } from 'angular-calendar';
+import { Component } from '@angular/core';
  
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
- /*  styleUrls: ['./app.component.css'], */
-  changeDetection: ChangeDetectionStrategy.OnPush
+ styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  view: CalendarView = CalendarView.Month;
-
-  viewDate: Date = new Date();
-
-  events: CalendarEvent[] = [];
+  
 }

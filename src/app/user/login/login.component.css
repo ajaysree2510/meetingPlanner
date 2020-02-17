@@ -6,3 +6,10 @@
 .para{
     text-align:center;
 }
+
+.fyp{
+    text-decoration: underline;
+    margin-left: 5% ;
+    transition: ease-in;
+    cursor: pointer;
+}

@@ -1,0 +1,65 @@
+h3 {
+    margin: 0 0 10px;
+  }
+  
+  pre {
+    background-color: #f5f5f5;
+    padding: 15px;
+  }
+
+  .brand {
+    margin-left: 35%;
+    color: bisque;
+}
+
+nav {
+  margin-bottom: 1%;
+}
+
+.mainContain{
+  display: flex;
+}
+
+.userList{
+  flex: 0 1 20%;
+}
+
+.heading{
+  text-align: center;
+  background-color: burlywood;
+  width: 100%;
+  margin-top: 13%;
+}
+.calendarContain{
+  flex: 0 1 97%;
+}
+.editContain{
+  width: 99%;
+  margin: auto;
+}
+
+
+.selectedUser{
+  color: darkgoldenrod;
+  text-align: center;
+}
+
+.userList li{
+  cursor: pointer;
+  text-align: center;
+  list-style: none;
+
+  margin: 1% 0;
+  padding: 2% 0;
+}
+
+.userList li:hover{
+  background-color: rgb(54, 241, 135);
+  transform: scale(1.05);
+  
+}
+.liactive{
+  background-color: rgb(54, 241, 135);
+  transform: scale(1.05);
+  
+}

@@ -51,9 +51,18 @@
               <span>Mobile: </span>
           
               <label for="inputMobile" class="sr-only">Mobile</label>
-          
-              <input type="number" id="inputMobile" class="form-control" [(ngModel)]="mobile" placeholder="Mobile" required>
-          
+              <div class="row">
+                <div class="col" id="country_code">
+               <select id="country_code" class="form-control" [(ngModel)]="code"  width="10"required>
+                <option *ngFor="let country of countryCodes | keyvalue" [value]="country.value">
+                {{country.key}}
+                </option>
+              </select>
+            </div>
+            <div class="col" id="inputMobile">
+              <input type="tel" id="inputMobile" class="form-control" [(ngModel)]="mobile" placeholder="Mobile" required>
+            </div>
+          </div>
               <br>
           
               <span>Email: </span>
@@ -71,9 +80,19 @@
               <input type="password" id="inputPassword" class="form-control" [(ngModel)]="password" placeholder="Password" required>
           
               <br>
-        
-          
-              <button class="btn btn-lg btn-primary btn-block" type="button" (click)="signupFunction()">Sign Up</button>
+              
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" [(ngModel)]="authorisation" value="admin">
+                <label class="form-check-label" for="inlineRadio1">Admin</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" [(ngModel)]="authorisation" value="user">
+                <label class="form-check-label" for="inlineRadio2">User</label>
+              </div>
+              
+              <br>
+
+              <button class="btn btn-lg btn-primary btn-block" type="button" (click)="signupFuction()">Sign Up</button>
           
             </div>
           

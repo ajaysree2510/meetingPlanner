@@ -1,0 +1,32 @@
+h3 {
+    margin: 0 0 10px;
+  }
+  
+  pre {
+    background-color: #f5f5f5;
+    padding: 15px;
+  }
+
+  .brand {
+    margin-left: 35%;
+    color: bisque;
+}
+
+nav {
+  margin-bottom: 1%;
+}
+
+.mainContain{
+  display: flex;
+}
+
+.calendarContain{
+  flex: 0 1 97%;
+  margin:0 2%;
+}
+
+.loggedinUser{
+  text-align: center;
+  color: darkgoldenrod;
+}
+

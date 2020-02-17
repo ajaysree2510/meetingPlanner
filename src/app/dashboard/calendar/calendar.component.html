@@ -1,0 +1,361 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03"
+    aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand" href="#">Navbar</a>
+
+  <h1 class="brand" href="#">Meeting Calendar</h1>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" (click)="logout()" style="cursor: pointer;">Log Out</a>
+      </li>
+    </ul>
+
+  </div>
+</nav>
+
+
+
+<div class="row text-center" style="margin: 0px;">
+  <div class="col-md-4">
+    <div class="btn-group">
+      <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()">
+        Previous
+      </div>
+      <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+        Today
+      </div>
+      <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+        (viewDateChange)="closeOpenMonthViewDay()">
+        Next
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+  </div>
+  <div class="col-md-4">
+    <div class="btn-group">
+      <div class="btn btn-primary" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+        Month
+      </div>
+      <div class="btn btn-primary" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+        Week
+      </div>
+      <div class="btn btn-primary" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+        Day
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+
+<div *ngIf="activeUsername" class="selectedUser">
+  <h3>{{activeUsername}}'s Calendar</h3>
+  <br>
+</div>
+  
+<div class="mainContain">
+  <div class="userList">
+    
+  <p class="heading">User List</p>
+  <ul>
+    <li  class="list-item"*ngFor="let user of allUserList" (click)="setActiveUser(user)" style="cursor:pointer;">
+      {{user.firstName+" "+user.lastName}}
+    </li>
+  </ul>
+</div>
+
+<div class="calendarContain">
+  <div [ngSwitch]="view">
+    <mwl-calendar-month-view *ngSwitchCase="CalendarView.Month" [viewDate]="viewDate" [events]="events"
+      [refresh]="refresh" [activeDayIsOpen]="activeDayIsOpen" (dayClicked)="dayClicked($event.day)"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view *ngSwitchCase="CalendarView.Week" [viewDate]="viewDate" [events]="events"
+      [refresh]="refresh" (eventClicked)="handleEvent('Clicked', $event.event)"
+      (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view *ngSwitchCase="CalendarView.Day" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+      (eventClicked)="handleEvent('Clicked', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-day-view>
+  </div>
+</div>
+</div>
+
+<!-- Everything you see below is just for the demo, you don't need to include it in your app -->
+
+<br /><br /><br />
+<div class="editContain">
+<h3>
+  {{activeUsername}} Events
+  <button class="btn btn-primary pull-right" (click)="openScrollableContent(createEvent)">
+    Create Event
+  </button>
+  <div class="clearfix"></div>
+</h3>
+
+<div class="table-responsive">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Primary color</th>
+        <th>Secondary color</th>
+        <th>Starts at</th>
+        <th>Ends at</th>
+        <th>Edit</th>
+        <th>Remove</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let event of events">
+        <td>
+          <input type="text" class="form-control" [(ngModel)]="event.title" (keyup)="refresh.next()" disabled/>
+        </td>
+        <td>
+          <input type="color" [(ngModel)]="red" (change)="refresh.next()" />
+        </td>
+        <td>
+          <input type="color" [(ngModel)]="red" (change)="refresh.next()" />
+        </td>
+        <td>
+          <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.start"
+            (ngModelChange)="refresh.next()" [altInput]="true" [convertModelValue]="true" [enableTime]="true"
+            dateFormat="Y-m-dTH:i" altFormat="F j, Y H:i" placeholder="Not set" disabled/>
+        </td>
+        <td>
+          <input class="form-control" type="text" mwlFlatpickr [(ngModel)]="event.end" (ngModelChange)="refresh.next()"
+            [altInput]="true" [convertModelValue]="true" [enableTime]="true" dateFormat="Y-m-dTH:i"
+            altFormat="F j, Y H:i" placeholder="Not set" disabled/>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="setCurrentEvent(event);openScrollableContent(editEvent)">
+            Edit
+          </button>
+        </td>
+        <td>
+          <button class="btn btn-danger" (click)="deleteEvent(event)">
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>
+
+  <ng-template #modalContent let-close="close">
+    <div class="modal-header">
+      <h5 class="modal-title">Calendar Event</h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div>
+        Title
+        <pre>{{ modalData?.event.title }}</pre>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div>
+            Start Time:
+            <pre>{{ modalData?.event.start | date:'medium' }}</pre>
+          </div>
+        </div>
+        <div class="col">
+          <div>
+            End Time:
+            <pre>{{ modalData?.event.end | date:'medium' }}</pre>
+          </div>
+        </div>
+
+      </div>
+      
+      <div>
+        Event:
+        <pre>{{ modalData?.event.description }}</pre>
+      </div>
+      <div>
+        Created By:
+        <pre>{{ modalData?.event.createdBy }}</pre>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">
+        OK
+      </button>
+    </div>
+  </ng-template>
+
+  <ng-template #createEvent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Modal title</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+          <label for="eventTitle">Title</label>
+          <input type="text" class="form-control" id="eventTitle" [(ngModel)]="eventTitle" placeholder="Event Title" required autofocus>
+        </div>
+        
+        <div class="form-row">
+          <div class="col">
+          <label for="startDate">Start Date</label>
+          
+          <input
+              class="form-control"
+              type="text"
+              mwlFlatpickr
+              [(ngModel)]="startDate"
+              (ngModelChange)="refresh.next()"
+              [altInput]="true"
+              [convertModelValue]="true"
+              [enableTime]="true"
+              dateFormat="Y-m-dTH:i"
+              altFormat="F j, Y H:i"
+              placeholder="Start"
+              required
+          />
+          
+          </div> 
+          <div class="col">
+            <label for="endDate">End Date</label>
+            <input
+              class="form-control"
+              type="text"
+              mwlFlatpickr
+              [(ngModel)]="endDate"
+              (ngModelChange)="refresh.next()"
+              [altInput]="true"
+              [convertModelValue]="true"
+              [enableTime]="true"
+              dateFormat="Y-m-dTH:i"
+              altFormat="F j, Y H:i"
+              placeholder="End"
+              required
+            />
+            </div> 
+        </div>
+        <div class="form-row">
+          <div class="col">
+            <label for="select">Select User</label>
+            <select class="custom-select multiple" [(ngModel)]="activeUser" multiple>
+              <option *ngFor = "let user of allUserList" value={{user.userId}}>{{user.firstName+" "+user.lastName}}</option>
+
+            </select>
+          </div>
+          <div class="col">
+            <label for="color">Select Color</label>
+            <input type="color" class="form-control" id="eventColor" [(ngModel)]="eventColor">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="event Description">Description</label>
+          
+          <textarea class="form-control" id="eventDescription" [(ngModel)]="eventDescription" placeholder="Event Description" required></textarea> 
+        </div>
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+          <div class="col">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+          </div>
+          <div class="col">
+            <button type="submit" class="btn btn-light" (click)="modal.close('Close click'); createnewEvent()" *ngIf="startDate && eventTitle && endDate">Submit</button>
+          </div>
+    </div>
+    </div>
+  </ng-template>
+
+  <ng-template #editEvent let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title">Modal title</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+          <label for="eventTitle">Title</label>
+          <input type="text" class="form-control" id="eventTitle" [(ngModel)]="editableEventTitle" placeholder="Event Title" required disabled>
+        </div>
+        
+        <div class="form-row">
+          <div class="col">
+          <label for="startDate">Start Date</label>
+          
+          <input
+              class="form-control"
+              type="text"
+              mwlFlatpickr
+              [(ngModel)]="editableStartDate"
+              
+              [altInput]="true"
+              [convertModelValue]="true"
+              [enableTime]="true"
+              dateFormat="Y-m-dTH:i"
+              altFormat="F j, Y H:i"
+              placeholder="Start"
+              required
+              autofocus
+          />
+          
+          </div> 
+          <div class="col">
+            <label for="endDate">End Date</label>
+            <input
+              class="form-control"
+              type="text"
+              mwlFlatpickr
+              [(ngModel)]="editableEndDate"
+              
+              [altInput]="true"
+              [convertModelValue]="true"
+              [enableTime]="true"
+              dateFormat="Y-m-dTH:i"
+              altFormat="F j, Y H:i"
+              placeholder="End"
+              required
+            />
+            </div> 
+        </div>
+        <div class="form-row">
+          <div class="col">
+            <label for="select">Select User</label>
+            <select class="custom-select multiple" [(ngModel)]="activeUser" disabled>
+              <option selected>Open this select menu</option>
+              <option *ngFor = "let user of allUserList" value={{user.userId}}>{{user.firstName+" "+user.lastName}}</option>
+
+            </select>
+          </div>
+          <div class="col">
+            <label for="color">Select Color</label>
+            <input type="color" class="form-control" id="eventColor" [(ngModel)]="eventColor">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="event Description">Description</label>
+          
+          <textarea class="form-control" id="eventDescription" [(ngModel)]="editableEventDescription" placeholder="Event Description" disabled></textarea> 
+        </div>
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+          <div class="col">
+      <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+          </div>
+          <div class="col">
+            <button type="button" class="btn btn-light" (click)="editingEvent(); modal.close('Close click')">Update</button>
+          </div>
+    </div>
+    </div>
+  </ng-template>

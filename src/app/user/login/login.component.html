@@ -22,7 +22,8 @@
         <br>
         <h2>Please Sign In</h2>
     </div>
-  <div class="mt-5 col-auto">
+    
+  <div class="mt-5 col-auto" style="margin: auto; width: 50%;">
     <div class="form-group">
       <label for="inputEmail">Email address</label>
       <input type="email" class="form-control" id="inputEmail" [(ngModel)] ="email" placeholder = "@gmail.com" required autofocus>
@@ -34,5 +35,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary" (click)=signInFunction()>Login</button>
+    <a *ngIf="email" (click)="forgotPassword()" class="fyp">Forgot Password</a>
+    </div>
+   
   </div>
-</div>

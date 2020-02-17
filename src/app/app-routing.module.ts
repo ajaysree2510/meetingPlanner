@@ -9,13 +9,13 @@ import { NotfoundComponent } from './notfound/notfound.component';
 
 const routes: Routes = [
   { path:'login', component:LoginComponent },
-  { path:'', redirectTo:'login', pathMatch:'full' },
   { path:'signup', component:SignupComponent },
   { path:'dashboard', component:CalendarComponent },
   { path:'user/:firstName', component:UserCalendarComponent},
   { path:'forgotPassword', component:ForgotPasswordComponent},
-  { path:'*', component:LoginComponent },
-  { path:'**', component:NotfoundComponent },
+ // { path:'*', component:LoginComponent },
+  { path:'', redirectTo:'/login', pathMatch:'full' },
+  { path:'**', component:LoginComponent },
   
 
 ];
